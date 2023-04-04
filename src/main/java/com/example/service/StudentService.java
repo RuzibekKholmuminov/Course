@@ -7,6 +7,7 @@ import com.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -116,4 +117,70 @@ public class StudentService {
         }
         return entity.get();
     }
+
+    public StudentDto getBySurname(String surname) {
+        StudentEntity entity = studentRepository.getBySurname(surname);
+        if (entity == null){
+            throw new AppBadRequestException("Student not found: " + surname);
+        }
+        StudentDto dto = new StudentDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setAge(entity.getAge());
+        dto.setLevel(entity.getLevel());
+        dto.setCreated_date(entity.getCreated_date());
+        dto.setGender(entity.getGender());
+        return dto;
+    }
+
+    public StudentDto getByLevel(Integer level) {
+        StudentEntity entity = studentRepository.getByLevel(level);
+        if (entity == null){
+            throw new AppBadRequestException("Level not found: " + level);
+        }
+        StudentDto dto = new StudentDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setAge(entity.getAge());
+        dto.setLevel(entity.getLevel());
+        dto.setCreated_date(entity.getCreated_date());
+        dto.setGender(entity.getGender());
+        return dto;
+    }
+
+    public StudentDto getByAge(Integer age) {
+        StudentEntity entity = studentRepository.getByAge(age);
+        if (entity == null){
+            throw new AppBadRequestException("Age not found: " + age);
+        }
+        StudentDto dto = new StudentDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setAge(entity.getAge());
+        dto.setLevel(entity.getLevel());
+        dto.setCreated_date(entity.getCreated_date());
+        dto.setGender(entity.getGender());
+        return dto;
+    }
+
+    public StudentDto getByGender(String gender) {
+        StudentEntity entity = studentRepository.getByGender(gender);
+        if (entity == null){
+            throw new AppBadRequestException("Gender not found: " + gender);
+        }
+        StudentDto dto = new StudentDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setAge(entity.getAge());
+        dto.setLevel(entity.getLevel());
+        dto.setCreated_date(entity.getCreated_date());
+        dto.setGender(entity.getGender());
+        return dto;
+    }
+
+
 }

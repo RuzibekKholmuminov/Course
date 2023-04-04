@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class StudentDto {
+public class CourseDto {
     private Integer id;
     private String name;
-    private String surname;
-    private Integer level;
-    private Integer age;
-    private String gender;
+    private Integer price;
+    private String duration;
     private LocalDate created_date;
 }

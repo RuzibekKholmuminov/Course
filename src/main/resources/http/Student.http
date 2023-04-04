@@ -28,4 +28,16 @@ Content-Type: application/json
 DELETE localhost:8080/student/delete/1
 
 ### Get By Name
-GET localhost:8080/student/getByName/
+GET localhost:8080/student/getByName/Toshmat
+
+### Get By Surname
+GET localhost:8080/student/getBySurname/Toshmatov
+
+### Get By Age
+GET localhost:8080/student/getByAge/18
+
+### Get By Level
+GET localhost:8080/student/getByLevel/1
+
+### Get By Gender
+GET localhost:8080/student/getByGender/Toshmat
