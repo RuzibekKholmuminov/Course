@@ -41,3 +41,6 @@ GET localhost:8080/student/getByLevel/1
 
 ### Get By Gender
 GET localhost:8080/student/getByGender/Toshmat
+
+
+

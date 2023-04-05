@@ -37,7 +37,7 @@ public class CourseService {
 
         entity.setCreated_date(dto.getCreated_date());
         courseRepository.save(entity);
-        entity.setId(dto.getId());
+        dto.setId(entity.getId());
         return dto;
     }
 

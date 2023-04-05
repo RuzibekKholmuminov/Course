@@ -1,0 +1,36 @@
+### Course create
+POST localhost:8080/course/create
+Content-Type: application/json
+
+{
+  "name": "Toshmat",
+  "price": 1000,
+  "duration": "6 oy",
+  "created_date": "2022.10.01"
+}
+
+### GET STUDENT BY ID
+GET localhost:8080/course/get/2
+
+### GET ALL STUDENT
+GET localhost:8080/course/get/All
+
+### UPDATE STUDENT
+PUT localhost:8080/course/update/2
+Content-Type: application/json
+
+{
+  "name": "Vali"
+}
+
+### DELETE STUDENT
+DELETE localhost:8080/course/delete/2
+
+### GET BY NAME
+GET localhost:8080/course/getByName/Toshmat
+
+### GET BY PRICE
+GET localhost:8080/course/getByPrice/1000
+
+### GET BY DURATION
+GET localhost:8080/course/getByDuration/6 oy

@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.dto.CourseDto;
-import com.example.dto.StudentDto;
 import com.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ public class CourseController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<?> create(@RequestBody CourseDto courseDto) {
-        courseDto.setCreated_date(LocalDate.now());
         CourseDto response = courseService.create(courseDto);
         return ResponseEntity.ok(response);
     }
