@@ -41,7 +41,7 @@ public class StudentService {
         entity.setGender(dto.getGender());
         entity.setCreated_date(dto.getCreated_date());
         studentRepository.save(entity);
-        entity.setId(dto.getId());
+        dto.setId(entity.getId());
         return dto;
     }
 

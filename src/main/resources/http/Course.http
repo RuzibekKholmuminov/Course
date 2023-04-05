@@ -6,7 +6,7 @@ Content-Type: application/json
   "name": "Toshmat",
   "price": 1000,
   "duration": "6 oy",
-  "created_date": "2022.10.01"
+  "created_date": "2022-10-01"
 }
 
 ### GET STUDENT BY ID

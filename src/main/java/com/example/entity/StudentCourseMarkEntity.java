@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Setter
 @Getter
 @Entity
@@ -20,4 +22,10 @@ public class StudentCourseMarkEntity {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private CourseEntity course_id;
+
+    @Column(name = "mark")
+    private String mark;
+
+    @Column(name = "created_date")
+    private LocalDate created_date;
 }

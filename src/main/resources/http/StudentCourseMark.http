@@ -1,0 +1,27 @@
+### StudentCourseMark create
+POST localhost:8080/student_course_mark/create
+Content-Type: application/json
+
+{
+  "student_id": 3,
+  "course_id": 1,
+  "mark": "5",
+  "created_date": "2022-10-01"
+}
+
+### UPDATE StudentCourseMark
+PUT localhost:8080/student_course_mark/update/1
+Content-Type: application/json
+
+{
+  "name": "Vali"
+}
+
+### GET BY ID
+GET localhost:8080/student_course_mark/get/1
+
+### GET ALL
+GET localhost:8080/student_course_mark/get/All
+
+### DELETE BY ID
+DELETE localhost:8080/student_course_mark/delete/1

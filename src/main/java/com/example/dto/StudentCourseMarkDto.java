@@ -9,10 +9,10 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class StudentCourseMark {
+public class StudentCourseMarkDto {
     private Integer id;
-    private StudentEntity student_id;
-    private CourseEntity course_id;
+    private Integer student_id;
+    private Integer course_id;
     private String mark;
     private LocalDate createdDate;
 }
