@@ -1,6 +1,5 @@
 package com.example.service;
 
-import com.example.dto.CourseDto;
 import com.example.dto.StudentCourseMarkDto;
 import com.example.entity.CourseEntity;
 import com.example.entity.StudentCourseMarkEntity;
@@ -10,6 +9,7 @@ import com.example.repository.StudentCourseMarkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -21,16 +21,16 @@ public class StudentCourseMarkService {
 
     public StudentCourseMarkDto create(StudentCourseMarkDto dto) {
         CourseEntity courseEntity = new CourseEntity();
-        courseEntity.setId(dto.getCourse_id());
+        courseEntity.setId(dto.getCourseId());
         StudentCourseMarkEntity entity = new StudentCourseMarkEntity();
-        entity.setCourse_id(courseEntity);
-        if (dto.getCourse_id() == null) {
+        entity.setCourseId(courseEntity);
+        if (dto.getCourseId() == null) {
             throw new AppBadRequestException("Course Id qani?");
         }
         StudentEntity student = new StudentEntity();
-        student.setId(dto.getStudent_id());
-        entity.setStudent_id(student);
-        if (dto.getStudent_id() == null) {
+        student.setId(dto.getStudentId());
+        entity.setStudentId(student);
+        if (dto.getStudentId() == null) {
             throw new AppBadRequestException("Student Id qani?");
         }
 
@@ -39,7 +39,7 @@ public class StudentCourseMarkService {
             throw new AppBadRequestException("Mark qani?");
         }
 
-        entity.setCreated_date(dto.getCreatedDate());
+        entity.setCreatedDate(LocalDate.parse("2022-01-03"));
         studentCourseMarkRepository.save(entity);
         dto.setId(entity.getId());
         return dto;
@@ -48,13 +48,13 @@ public class StudentCourseMarkService {
     public Object update(Integer id, StudentCourseMarkDto dto) {
         StudentCourseMarkEntity entity = get(id);
         StudentEntity student = new StudentEntity();
-        student.setId(dto.getStudent_id());
-        entity.setStudent_id(student);
+        student.setId(dto.getStudentId());
+        entity.setStudentId(student);
         CourseEntity course = new CourseEntity();
-        course.setId(dto.getCourse_id());
-        entity.setCourse_id(course);
+        course.setId(dto.getStudentId());
+        entity.setCourseId(course);
         entity.setMark(dto.getMark());
-        entity.setCreated_date(dto.getCreatedDate());
+        entity.setCreatedDate(dto.getCreatedDate());
         studentCourseMarkRepository.save(entity);
         return true;
     }
@@ -71,10 +71,10 @@ public class StudentCourseMarkService {
         StudentCourseMarkEntity entity = get(id);
         StudentCourseMarkDto dto = new StudentCourseMarkDto();
         dto.setId(entity.getId());
-        dto.setCourse_id(entity.getCourse_id().getId());
-        dto.setStudent_id(entity.getStudent_id().getId());
+        dto.setCourseId(entity.getCourseId().getId());
+        dto.setStudentId(entity.getStudentId().getId());
         dto.setMark(entity.getMark());
-        dto.setCreatedDate(entity.getCreated_date());
+        dto.setCreatedDate(entity.getCreatedDate());
 
         return dto;
 
@@ -86,10 +86,10 @@ public class StudentCourseMarkService {
         iterable.forEach(entity -> {
             StudentCourseMarkDto dto = new StudentCourseMarkDto();
             dto.setId(entity.getId());
-            dto.setCourse_id(entity.getCourse_id().getId());
-            dto.setStudent_id(entity.getStudent_id().getId());
+            dto.setCourseId(entity.getCourseId().getId());
+            dto.setStudentId(entity.getStudentId().getId());
             dto.setMark(entity.getMark());
-            dto.setCreatedDate(entity.getCreated_date());
+            dto.setCreatedDate(entity.getCreatedDate());
             studentDTOLinkedList.add(dto);
         });
         return studentDTOLinkedList;
@@ -100,4 +100,110 @@ public class StudentCourseMarkService {
         studentCourseMarkRepository.delete(entity);
         return true;
     }
+
+    public StudentCourseMarkDto getByDate(StudentEntity student_id, LocalDate date) {
+        StudentCourseMarkEntity entity = studentCourseMarkRepository.
+                findByStudentIdAndCreatedDateOrderByMark(student_id, date);
+        StudentCourseMarkDto dto = new StudentCourseMarkDto();
+        dto.setId(entity.getId());
+        dto.setCourseId(entity.getCourseId().getId());
+        dto.setStudentId(entity.getStudentId().getId());
+        dto.setMark(entity.getMark());
+        dto.setCreatedDate(entity.getCreatedDate());
+
+        return dto;
+    }
+
+    public List<StudentCourseMarkDto> getStudentCourseMarkListBetweenDates(StudentEntity studentId, LocalDate fromDate, LocalDate toDate) {
+         Iterable<StudentCourseMarkEntity> iterable=    studentCourseMarkRepository.
+                 findAllByStudentIdAndCreatedDateBetween(studentId, fromDate,toDate);
+        List<StudentCourseMarkDto> studentDTOLinkedList = new LinkedList<>();
+        iterable.forEach(entity -> {
+            StudentCourseMarkDto dto = new StudentCourseMarkDto();
+            dto.setId(entity.getId());
+            dto.setCourseId(entity.getCourseId().getId());
+            dto.setStudentId(entity.getStudentId().getId());
+            dto.setMark(entity.getMark());
+            dto.setCreatedDate(entity.getCreatedDate());
+            studentDTOLinkedList.add(dto);
+        });
+
+        return studentDTOLinkedList;
+    }
+
+    public List<StudentCourseMarkDto> getAllStudentMark(StudentEntity studentId) {
+        Iterable<StudentCourseMarkEntity> iterable=    studentCourseMarkRepository.
+                findByStudentIdOrderByMarkDesc(studentId);
+        List<StudentCourseMarkDto> studentDTOLinkedList = new LinkedList<>();
+        iterable.forEach(entity -> {
+            StudentCourseMarkDto dto = new StudentCourseMarkDto();
+            dto.setId(entity.getId());
+            dto.setCourseId(entity.getCourseId().getId());
+            dto.setStudentId(entity.getStudentId().getId());
+            dto.setMark(entity.getMark());
+            dto.setCreatedDate(entity.getCreatedDate());
+            studentDTOLinkedList.add(dto);
+        });
+
+        return studentDTOLinkedList;
+    }
+
+    public List<StudentCourseMarkDto> getDateMark(StudentEntity studentId, CourseEntity courseId) {
+        Iterable<StudentCourseMarkEntity> iterable=    studentCourseMarkRepository.
+                findByStudentIdAndCourseIdOrderByCourseIdDescMark(studentId, courseId);
+        List<StudentCourseMarkDto> studentDTOLinkedList = new LinkedList<>();
+        iterable.forEach(entity -> {
+            StudentCourseMarkDto dto = new StudentCourseMarkDto();
+            dto.setId(entity.getId());
+            dto.setCourseId(entity.getCourseId().getId());
+            dto.setStudentId(entity.getStudentId().getId());
+            dto.setMark(entity.getMark());
+            dto.setCreatedDate(entity.getCreatedDate());
+            studentDTOLinkedList.add(dto);
+        });
+
+        return studentDTOLinkedList;
+    }
+
+    public StudentCourseMarkDto getFirstMark(StudentEntity id) {
+        StudentCourseMarkEntity entity = studentCourseMarkRepository.findFirstByStudentIdOrderByMarkAsc(id);
+        StudentCourseMarkDto dto = new StudentCourseMarkDto();
+        dto.setId(entity.getId());
+        dto.setCourseId(entity.getCourseId().getId());
+        dto.setStudentId(entity.getStudentId().getId());
+        dto.setMark(entity.getMark());
+        dto.setCreatedDate(entity.getCreatedDate());
+
+        return dto;
+    }
+    public StudentCourseMarkDto getLastMark(StudentEntity id) {
+        StudentCourseMarkEntity entity = studentCourseMarkRepository.findFirstByStudentIdOrderByMark(id);
+        StudentCourseMarkDto dto = new StudentCourseMarkDto();
+        dto.setId(entity.getId());
+        dto.setCourseId(entity.getCourseId().getId());
+        dto.setStudentId(entity.getStudentId().getId());
+        dto.setMark(entity.getMark());
+        dto.setCreatedDate(entity.getCreatedDate());
+
+        return dto;
+    }
+
+    public StudentCourseMarkDto getStudentCurseFirstMark(StudentEntity id, CourseEntity course) {
+        StudentCourseMarkEntity entity = studentCourseMarkRepository.findFirstByStudentIdAndAndCourseIdOrderByMark(id,course);
+        StudentCourseMarkDto dto = new StudentCourseMarkDto();
+        dto.setId(entity.getId());
+        dto.setCourseId(entity.getCourseId().getId());
+        dto.setStudentId(entity.getStudentId().getId());
+        dto.setMark(entity.getMark());
+        dto.setCreatedDate(entity.getCreatedDate());
+
+        return dto;
+    }
+
+    public Integer countCourseMark(CourseEntity course) {
+        Integer count = studentCourseMarkRepository.countByCourseIdOrderByMark(course);
+        return count;
+    }
+
+
 }

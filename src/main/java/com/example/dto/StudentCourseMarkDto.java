@@ -11,8 +11,8 @@ import java.time.LocalDate;
 @Setter
 public class StudentCourseMarkDto {
     private Integer id;
-    private Integer student_id;
-    private Integer course_id;
+    private Integer studentId;
+    private Integer courseId;
     private String mark;
     private LocalDate createdDate;
 }

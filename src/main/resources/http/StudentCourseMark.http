@@ -3,8 +3,8 @@ POST localhost:8080/student_course_mark/create
 Content-Type: application/json
 
 {
-  "student_id": 3,
-  "course_id": 1,
+  "studentId": 1,
+  "courseId": 1,
   "mark": "5",
   "created_date": "2022-10-01"
 }
@@ -25,3 +25,25 @@ GET localhost:8080/student_course_mark/get/All
 
 ### DELETE BY ID
 DELETE localhost:8080/student_course_mark/delete/1
+
+### GET BY DATE
+GET localhost:8080/student_course_mark/getByDate?studentId=1&created_date=2022-01-01
+
+### Get BY BETWEEN DATE
+GET localhost:8080/student_course_mark/getBetweenDate?studentId=1&fromDate=2022-01-01&toDate=2022-01-03
+
+### GET BY ALL MARK
+GET localhost:8080/student_course_mark/getAllMark?studentId=1
+
+### GET First MARK
+GET localhost:8080/student_course_mark/getTopMark/1
+
+
+### GET Last MARK
+GET localhost:8080/student_course_mark/getLastMark/1
+
+### GET Course first MARK
+GET localhost:8080/student_course_mark/getStudentCourseFirstMark?studentId=1&courseId=1
+
+### GET Count Course Mark
+GET localhost:8080/student_course_mark/countCourseMark?courseId=1

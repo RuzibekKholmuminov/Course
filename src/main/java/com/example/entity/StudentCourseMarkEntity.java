@@ -17,15 +17,15 @@ public class StudentCourseMarkEntity {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
-    private StudentEntity student_id;
+    private StudentEntity studentId;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
-    private CourseEntity course_id;
+    private CourseEntity courseId;
 
     @Column(name = "mark")
     private String mark;
 
     @Column(name = "created_date")
-    private LocalDate created_date;
+    private LocalDate createdDate;
 }

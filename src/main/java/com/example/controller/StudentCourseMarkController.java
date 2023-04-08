@@ -1,8 +1,8 @@
 package com.example.controller;
 
-import com.example.dto.CourseDto;
 import com.example.dto.StudentCourseMarkDto;
-import com.example.dto.StudentDto;
+import com.example.entity.CourseEntity;
+import com.example.entity.StudentEntity;
 import com.example.service.StudentCourseMarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,4 +44,77 @@ public class StudentCourseMarkController {
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(studentCourseMarkService.delete(id));
     }
+
+    @GetMapping(value = "/getByDate")
+    public ResponseEntity<?> getByDate(@RequestParam("studentId") Integer id, @RequestParam("created_date") LocalDate created_date){
+        StudentEntity student = new StudentEntity();
+        student.setId(id);
+        StudentCourseMarkDto dto = studentCourseMarkService.getByDate(student, created_date);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/getBetweenDate")
+    private ResponseEntity<List<StudentCourseMarkDto>> getBetweenDate(@RequestParam("studentId") Integer sId,
+                                             @RequestParam("fromDate") LocalDate fromDate,
+                                             @RequestParam("toDate") LocalDate toDate){
+        StudentEntity student = new StudentEntity();
+        student.setId(sId);
+        List<StudentCourseMarkDto> dto = studentCourseMarkService.
+                getStudentCourseMarkListBetweenDates(student, fromDate, toDate);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/getAllMark")
+    private ResponseEntity<List<StudentCourseMarkDto>> getAllMark(@RequestParam("studentId") Integer sId){
+        StudentEntity student = new StudentEntity();
+        student.setId(sId);
+        List<StudentCourseMarkDto> dto = studentCourseMarkService.getAllStudentMark(student);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/getDateMark")
+    private ResponseEntity<List<StudentCourseMarkDto>> getAllMark(@RequestParam("studentId") Integer sId,
+                                                                  @RequestParam("courseId") Integer cId){
+        StudentEntity student = new StudentEntity();
+        student.setId(sId);
+        CourseEntity course = new CourseEntity();
+        course.setId(cId);
+        List<StudentCourseMarkDto> dto = studentCourseMarkService.getDateMark(student,course);
+        return ResponseEntity.ok(dto);
+    }
+    @GetMapping(value = "/getTopMark/{id}")
+    public ResponseEntity<?> getFirstMark(@PathVariable("id") Integer id) {
+        StudentEntity student = new StudentEntity();
+        student.setId(id);
+        StudentCourseMarkDto dto = studentCourseMarkService.getFirstMark(student);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/getLastMark/{id}")
+    public ResponseEntity<?> getLastMark(@PathVariable("id") Integer id) {
+        StudentEntity student = new StudentEntity();
+        student.setId(id);
+        StudentCourseMarkDto dto = studentCourseMarkService.getLastMark(student);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/getStudentCourseFirstMark")
+    public ResponseEntity<?> getLastMark(@RequestParam("studentId") Integer sId,
+                                         @RequestParam("courseId") Integer cId) {
+        StudentEntity student = new StudentEntity();
+        student.setId(sId);
+        CourseEntity course = new CourseEntity();
+        course.setId(cId);
+        StudentCourseMarkDto dto = studentCourseMarkService.getStudentCurseFirstMark(student, course);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/countCourseMark")
+    public ResponseEntity<?> countCourseMark(@RequestParam("courseId") Integer cId) {
+        CourseEntity course = new CourseEntity();
+        course.setId(cId);
+        Integer count = studentCourseMarkService.countCourseMark( course);
+        return ResponseEntity.ok(count);
+    }
+
 }

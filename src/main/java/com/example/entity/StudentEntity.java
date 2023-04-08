@@ -25,6 +25,6 @@ public class StudentEntity {
     private Integer age;
     @Column(name = "Gender")
     private String gender;
-    @Column(name = "created_date")
+    @Column(name = "date")
     private LocalDate created_date;
 }
