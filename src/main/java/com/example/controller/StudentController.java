@@ -1,8 +1,12 @@
 package com.example.controller;
 
+import com.example.dto.CorseDTO;
 import com.example.dto.StudentDto;
+import com.example.dto.StudentFilterRequestDTO;
+import com.example.mapper.CourseInfoMapper;
 import com.example.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +76,32 @@ public class StudentController {
     public ResponseEntity<?> getByGender(@PathVariable("gender") String gender){
         StudentDto dto = studentService.getByGender(gender);
         return ResponseEntity.ok(dto);
+    }
+
+
+
+    @GetMapping(value = "/paging")
+    public ResponseEntity<?> test2(@RequestParam(value = "page", defaultValue = "1") int page,
+                                   @RequestParam(value = "size", defaultValue = "30") int size) {
+
+        Page<StudentDto> studentDtoPage = studentService.pagination(1,2);
+        return ResponseEntity.ok(studentDtoPage);
+    }
+
+    @PostMapping(value = "/paging-level")
+    public ResponseEntity<Page<StudentDto>> pagingWithName(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "30") int size,
+                                                           @RequestBody StudentFilterRequestDTO filter) {
+        Page<StudentDto> response = studentService.paginationWithLevel(filter.getLevel(), page, size);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/paging-gender")
+    public ResponseEntity<Page<StudentDto>> pagingWithGender(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "30") int size,
+                                                           @RequestBody StudentFilterRequestDTO filter) {
+        Page<StudentDto> response = studentService.paginationWithGender(filter.getGender(), page, size);
+        return ResponseEntity.ok(response);
     }
 
 }

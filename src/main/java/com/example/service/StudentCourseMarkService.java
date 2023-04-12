@@ -1,10 +1,12 @@
 package com.example.service;
 
+import com.example.dto.CorseDTO;
 import com.example.dto.StudentCourseMarkDto;
 import com.example.entity.CourseEntity;
 import com.example.entity.StudentCourseMarkEntity;
 import com.example.entity.StudentEntity;
 import com.example.exp.AppBadRequestException;
+import com.example.mapper.CourseInfoMapper;
 import com.example.repository.StudentCourseMarkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -203,6 +205,32 @@ public class StudentCourseMarkService {
     public Integer countCourseMark(CourseEntity course) {
         Integer count = studentCourseMarkRepository.countByCourseIdOrderByMark(course);
         return count;
+    }
+
+    public void test() {
+        List<Object[]> courseObjList = studentCourseMarkRepository.findLastCourseMarkerAsNative(1);
+        if (courseObjList.size() > 0) {
+            Object[] courseObj = courseObjList.get(0);
+
+            CorseDTO courseDTO = new CorseDTO();
+            courseDTO.setId((Integer) courseObj[0]);
+            courseDTO.setName((String) courseObj[1]);
+            System.out.println(courseDTO);
+        }
+
+        System.out.println("dasda");
+    }
+
+    public void test2() {
+        CourseInfoMapper courseInfoMapper = studentCourseMarkRepository.findLastCourseMarkerAsNativeMapping(1);
+        if (courseInfoMapper != null) {
+            CorseDTO courseDTO = new CorseDTO();
+            courseDTO.setId(courseInfoMapper.getCId());
+            courseDTO.setName(courseInfoMapper.getCName());
+            System.out.println(courseDTO +" "+ courseInfoMapper.getMark());
+        }
+
+        System.out.println("dasda");
     }
 
 

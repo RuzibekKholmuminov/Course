@@ -117,4 +117,15 @@ public class StudentCourseMarkController {
         return ResponseEntity.ok(count);
     }
 
+    @GetMapping(value = "/test/{id}")
+    public ResponseEntity<?> test(@PathVariable("id") Integer id){
+        studentCourseMarkService.test();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/test2/{id}")
+    public ResponseEntity<?> test2(@PathVariable("id") Integer id){
+        studentCourseMarkService.test2();
+        return ResponseEntity.ok().build();
+    }
 }
