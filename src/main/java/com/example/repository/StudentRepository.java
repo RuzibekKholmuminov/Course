@@ -12,7 +12,7 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     StudentEntity getByLevel(Integer level);
     StudentEntity getByAge(Integer age);
     StudentEntity getByGender(String gender);
-    Page<StudentEntity> findAll( Pageable pageable);
+    Page<StudentEntity> getAll( Pageable pageable);
     Page<StudentEntity> findAllByLevelOrderById(Integer level, Pageable pageable);
     Page<StudentEntity> findAllByGender(String gender, Pageable pageable);
 }

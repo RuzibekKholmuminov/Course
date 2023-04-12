@@ -1,12 +1,14 @@
 package com.example.service;
 
 import com.example.dto.CourseDto;
-import com.example.dto.StudentDto;
 import com.example.entity.CourseEntity;
-import com.example.entity.StudentEntity;
 import com.example.exp.AppBadRequestException;
 import com.example.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -132,5 +134,63 @@ public class CourseService {
         dto.setDuration(entity.getDuration());
         dto.setCreated_date(entity.getCreated_date());
         return dto;
+    }
+
+    public Page<CourseDto> pagination(int page, int size){
+        Pageable paging = PageRequest.of(page -1, size);
+        Page<CourseEntity> pageObj = courseRepository.getAll(paging);
+
+        long totalCount = pageObj.getTotalElements();
+
+        List<CourseEntity> entityList = pageObj.getContent();
+        List<CourseDto> dtoList = new LinkedList<>();
+
+        for (CourseEntity entity : entityList){
+            CourseDto dto = new CourseDto();
+            dto.setId(entity.getId());
+            dto.setName(entity.getName());
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, paging, totalCount);
+    }
+
+    public Page<CourseDto> paginationByCreatedDate(int page, int size){
+        Pageable paging = PageRequest.of(page -1, size);
+        Page<CourseEntity> pageObj = courseRepository.getBy(paging);
+
+        long totalCount = pageObj.getTotalElements();
+
+        List<CourseEntity> entityList = pageObj.getContent();
+        List<CourseDto> dtoList = new LinkedList<>();
+
+        for (CourseEntity entity : entityList){
+            CourseDto dto = new CourseDto();
+            dto.setId(entity.getId());
+            dto.setName(entity.getName());
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, paging, totalCount);
+    }
+
+    public Page<CourseDto> paginationByPrice(Integer price, int page, int size){
+        Pageable paging = PageRequest.of(page -1, size);
+        Page<CourseEntity> pageObj = courseRepository.getByPrice(price,paging);
+
+        long totalCount = pageObj.getTotalElements();
+
+        List<CourseEntity> entityList = pageObj.getContent();
+        List<CourseDto> dtoList = new LinkedList<>();
+
+        for (CourseEntity entity : entityList){
+            CourseDto dto = new CourseDto();
+            dto.setId(entity.getId());
+            dto.setName(entity.getName());
+            dto.setPrice(entity.getPrice());
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, paging, totalCount);
     }
 }

@@ -188,7 +188,7 @@ public class StudentService {
 
     public Page<StudentDto> pagination(int page, int size){
         Pageable paging = PageRequest.of(page -1, size);
-        Page<StudentEntity> pageObj = studentRepository.findAll(paging);
+        Page<StudentEntity> pageObj = studentRepository.getAll(paging);
 
         long totalCount = pageObj.getTotalElements();
 

@@ -1,8 +1,11 @@
 package com.example.controller;
 
 import com.example.dto.CourseDto;
+import com.example.dto.CourseFilterRequestDTO;
+import com.example.dto.StudentDto;
 import com.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +63,19 @@ public class CourseController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping(value = "/paging")
+    public ResponseEntity<?> paging(@RequestParam(value = "page", defaultValue = "1") int page,
+                                   @RequestParam(value = "size", defaultValue = "30") int size) {
+
+        Page<CourseDto> studentDtoPage = courseService.pagination(1,2);
+        return ResponseEntity.ok(studentDtoPage);
+    }
+
+    @GetMapping(value = "/pagingByPrice")
+    public ResponseEntity<?> pagingByPrice(@RequestParam(value = "page", defaultValue = "1") int page,
+                                           @RequestParam(value = "size", defaultValue = "30") int size,
+                                           @RequestBody CourseFilterRequestDTO filter) {
+        Page<CourseDto> studentDtoPage = courseService.paginationByPrice(filter.getPrice(),1,2);
+        return ResponseEntity.ok(studentDtoPage);
+    }
 }
