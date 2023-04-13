@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.CorseDTO;
 import com.example.dto.StudentCourseMarkDto;
+import com.example.dto.StudentDto;
 import com.example.entity.CourseEntity;
 import com.example.entity.StudentCourseMarkEntity;
 import com.example.entity.StudentEntity;
@@ -9,6 +10,7 @@ import com.example.exp.AppBadRequestException;
 import com.example.mapper.CourseInfoMapper;
 import com.example.repository.StudentCourseMarkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -233,5 +235,66 @@ public class StudentCourseMarkService {
         System.out.println("dasda");
     }
 
+    public Page<StudentCourseMarkDto> pagination(int page, int size){
+        Pageable paging = PageRequest.of(page -1, size);
+        Page<StudentCourseMarkEntity> pageObj = studentCourseMarkRepository.getAll(paging);
 
+        long totalCount = pageObj.getTotalElements();
+
+        List<StudentCourseMarkEntity> entityList = pageObj.getContent();
+        List<StudentCourseMarkDto> dtoList = new LinkedList<>();
+
+        for (StudentCourseMarkEntity entity : entityList){
+            StudentCourseMarkDto dto = new StudentCourseMarkDto();
+            dto.setId(entity.getId());
+            dto.setStudentId(entity.getStudentId().getId());
+            dto.setCourseId(entity.getCourseId().getId());
+
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, paging, totalCount);
+    }
+
+    public Page<StudentCourseMarkDto> paginationWithStudentId(Integer id, int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "studentId");
+        Pageable paging = PageRequest.of(page - 1, size, sort);
+        Page<StudentCourseMarkEntity> pageObj = studentCourseMarkRepository.findAllByStudentId(id, paging);
+
+        long totalCount = pageObj.getTotalElements();
+        List<StudentCourseMarkEntity> entityList = pageObj.getContent();
+        List<StudentCourseMarkDto> dtoList = new LinkedList<>();
+        for (StudentCourseMarkEntity entity : entityList) {
+            StudentCourseMarkDto dto = new StudentCourseMarkDto();
+            dto.setId(entity.getId());
+            dto.setStudentId(entity.getStudentId().getId());
+            dto.setCourseId(entity.getCourseId().getId());
+            dto.setMark(entity.getMark());
+            dto.setCreatedDate(entity.getCreatedDate());
+            dtoList.add(dto);
+        }
+        Page<StudentCourseMarkDto> response = new PageImpl<>(dtoList, paging, totalCount);
+        return response;
+    }
+
+    public Page<StudentCourseMarkDto> paginationWithCourseId(Integer id, int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "courseId");
+        Pageable paging = PageRequest.of(page - 1, size, sort);
+        Page<StudentCourseMarkEntity> pageObj = studentCourseMarkRepository.findAllByCourseId(id, paging);
+
+        long totalCount = pageObj.getTotalElements();
+        List<StudentCourseMarkEntity> entityList = pageObj.getContent();
+        List<StudentCourseMarkDto> dtoList = new LinkedList<>();
+        for (StudentCourseMarkEntity entity : entityList) {
+            StudentCourseMarkDto dto = new StudentCourseMarkDto();
+            dto.setId(entity.getId());
+            dto.setStudentId(entity.getStudentId().getId());
+            dto.setCourseId(entity.getCourseId().getId());
+            dto.setMark(entity.getMark());
+            dto.setCreatedDate(entity.getCreatedDate());
+            dtoList.add(dto);
+        }
+        Page<StudentCourseMarkDto> response = new PageImpl<>(dtoList, paging, totalCount);
+        return response;
+    }
 }

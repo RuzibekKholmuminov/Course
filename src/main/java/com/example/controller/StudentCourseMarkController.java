@@ -1,10 +1,14 @@
 package com.example.controller;
 
 import com.example.dto.StudentCourseMarkDto;
+import com.example.dto.StudentDto;
+import com.example.dto.StudentFilterRequestDTO;
+import com.example.dto.StudentMarkFilter;
 import com.example.entity.CourseEntity;
 import com.example.entity.StudentEntity;
 import com.example.service.StudentCourseMarkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -128,4 +132,27 @@ public class StudentCourseMarkController {
         studentCourseMarkService.test2();
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping(value = "/paging")
+    public ResponseEntity<?> test2(@RequestParam(value = "page", defaultValue = "1") int page,
+                                   @RequestParam(value = "size", defaultValue = "30") int size) {
+        Page<StudentCourseMarkDto> studentDtoPage = studentCourseMarkService.pagination(1,2);
+        return ResponseEntity.ok(studentDtoPage);
+    }
+
+    @PostMapping(value = "/paging-student-id")
+    public ResponseEntity<Page<StudentCourseMarkDto>> pagingWithStudentId(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "30") int size,
+                                                           @RequestBody StudentMarkFilter filter) {
+        Page<StudentCourseMarkDto> response = studentCourseMarkService.paginationWithStudentId(filter.getStudentId(), page, size);
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping(value = "/paging-course-id")
+    public ResponseEntity<Page<StudentCourseMarkDto>> pagingWithCourseId(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                                     @RequestParam(value = "size", defaultValue = "30") int size,
+                                                                     @RequestBody StudentMarkFilter filter) {
+        Page<StudentCourseMarkDto> response = studentCourseMarkService.paginationWithCourseId(filter.getCourseId(), page, size);
+        return ResponseEntity.ok(response);
+    }
+
 }
